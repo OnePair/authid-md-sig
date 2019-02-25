@@ -67,6 +67,10 @@ export class AuthIDMDSig {
     return fieldIds;
   }
 
+  public getMdDoc(): string {
+    return this.mdDoc;
+  }
+
   public sign(attributes: object): Promise<void> {
     return new Promise(async (onSuccess: Function, onError: Function) => {
       try {
