@@ -85,6 +85,7 @@ export class AuthIDMDSig {
 
         // 3) Sign
         let sig = await this.authID.createJwt(claims, null);
+        this.attributes = attributes;
         this.sig = sig["jwt"];
 
         onSuccess();
