@@ -95,6 +95,10 @@ export class Witness {
     });
   }
 
+  public getAttributes(): object {
+    return this.attributes;
+  }
+
   public getSig(): string {
     return this.sig;
   }
