@@ -9,7 +9,7 @@
 
 ## Usage
 
-* Sign a and verify.
+* Sign and verify.
     1. Sign a markdown document.
         ```js
         import { AuthIDMDSig } from "authid-md-sig"
