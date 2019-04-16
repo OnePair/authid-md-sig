@@ -4,15 +4,16 @@
   "description": "",
   "main": "./build/index.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc && tsc --declaration"
   },
   "author": "“Noah <“noah.bouma@gmail.com”>",
   "license": "ISC",
   "dependencies": {
-    "@types/node": "^10.12.24",
+    "@types/node": "^10.14.4",
     "cheerio": "^1.0.0-rc.2",
     "jsdom": "^13.2.0",
     "jsonwebtoken": "^8.4.0",
-    "tsc": "^1.20150623.0"
+    "tsc": "^1.20150623.0",
+    "typescript": "^3.4.3"
   }
 }

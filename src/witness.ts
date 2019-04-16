@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import * as crypto from "crypto";
 import JWT from "jsonwebtoken";
 
 export class Witness {
@@ -51,7 +51,6 @@ export class Witness {
   public verify(): Promise<object> {
     return new Promise(async (onSuccess: Function, onError: Function) => {
       try {
-
         // 2) Decode the signature
         let signedValues = JWT.decode(this.sig);
 

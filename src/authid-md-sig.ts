@@ -1,7 +1,7 @@
 import { Witness } from "./witness";
 
 import cheerio from "cheerio";
-import crypto from "crypto";
+import * as crypto from "crypto";
 import JWT from "jsonwebtoken";
 
 export class AuthIDMDSig {
@@ -111,25 +111,32 @@ export class AuthIDMDSig {
         if (docHash != signedValues["docHash"])
           throw new Error("Document hash does not match!");
 
-        // 4) Get the signer's id
-        let issuer = signedValues["issuer"];
         let issuerId;
 
-        if (issuer["type"] == "processor") {
-          let processor = JWT.decode(issuer["processor"]);
-          let processorIssuer = processor["issuer"];
+        if ("name" in signedValues)
+          issuerId = signedValues["name"];
+        else { // The issuer is just a DID
 
-          if ("did" in processorIssuer)
-            issuerId = processorIssuer["did"];
-          else
-            issuerId = processorIssuer["id"];
-        } else {
-          issuerId = issuer["did"]
+          // 4) Get the signer's id
+          let issuer = signedValues["issuer"];
+
+          if (issuer["type"] == "processor") {
+            let processor = JWT.decode(issuer["processor"]);
+            let processorIssuer = processor["issuer"];
+
+            if ("did" in processorIssuer)
+              issuerId = processorIssuer["did"];
+            else
+              issuerId = processorIssuer["id"];
+          } else {
+            issuerId = issuer["did"]
+          }
         }
 
         let verified = await this.authID.verifyJwt(this.sig, issuerId);
 
         let verificationResult = { valid: verified["valid"], id: issuerId };
+
 
         onSuccess(verificationResult);
 
