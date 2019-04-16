@@ -116,7 +116,6 @@ export class AuthIDMDSig {
         if ("name" in signedValues)
           issuerId = signedValues["name"];
         else { // The issuer is just a DID
-
           // 4) Get the signer's id
           let issuer = signedValues["issuer"];
 
