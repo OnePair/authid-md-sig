@@ -70,16 +70,23 @@ export class Witness {
         let issuer = signedValues["issuer"];
         let issuerId;
 
-        if (issuer["type"] == "processor") {
-          let processor = JWT.decode(issuer["processor"]);
-          let processorIssuer = processor["issuer"];
+        if ("name" in signedValues)
+          issuerId = signedValues["name"];
+        else { // The issuer is just a DID
+          // 4) Get the signer's id
+          let issuer = signedValues["issuer"];
 
-          if ("did" in processorIssuer)
-            issuerId = processorIssuer["did"];
-          else
-            issuerId = processorIssuer["id"];
-        } else {
-          issuerId = issuer["did"]
+          if (issuer["type"] == "processor") {
+            let processor = JWT.decode(issuer["processor"]);
+            let processorIssuer = processor["issuer"];
+
+            if ("did" in processorIssuer)
+              issuerId = processorIssuer["did"];
+            else
+              issuerId = processorIssuer["id"];
+          } else {
+            issuerId = issuer["did"]
+          }
         }
 
         let verified = await this.authID.verifyJwt(this.sig, issuerId);

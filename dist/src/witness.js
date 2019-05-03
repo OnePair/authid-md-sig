@@ -88,7 +88,7 @@ var Witness = /** @class */ (function () {
     Witness.prototype.verify = function () {
         var _this = this;
         return new Promise(function (onSuccess, onError) { return __awaiter(_this, void 0, void 0, function () {
-            var signedValues, docHash, subjectSigHash, issuer, issuerId, processor, processorIssuer, verified, verificationResult, err_2;
+            var signedValues, docHash, subjectSigHash, issuer, issuerId, issuer_1, processor, processorIssuer, verified, verificationResult, err_2;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -102,16 +102,21 @@ var Witness = /** @class */ (function () {
                             throw new Error("Wrong subject!");
                         issuer = signedValues["issuer"];
                         issuerId = void 0;
-                        if (issuer["type"] == "processor") {
-                            processor = jsonwebtoken_1.default.decode(issuer["processor"]);
-                            processorIssuer = processor["issuer"];
-                            if ("did" in processorIssuer)
-                                issuerId = processorIssuer["did"];
-                            else
-                                issuerId = processorIssuer["id"];
-                        }
-                        else {
-                            issuerId = issuer["did"];
+                        if ("name" in signedValues)
+                            issuerId = signedValues["name"];
+                        else { // The issuer is just a DID
+                            issuer_1 = signedValues["issuer"];
+                            if (issuer_1["type"] == "processor") {
+                                processor = jsonwebtoken_1.default.decode(issuer_1["processor"]);
+                                processorIssuer = processor["issuer"];
+                                if ("did" in processorIssuer)
+                                    issuerId = processorIssuer["did"];
+                                else
+                                    issuerId = processorIssuer["id"];
+                            }
+                            else {
+                                issuerId = issuer_1["did"];
+                            }
                         }
                         return [4 /*yield*/, this.authID.verifyJwt(this.sig, issuerId)];
                     case 1:
